@@ -7,6 +7,8 @@ namespace ContosoOrderProcessor.Services
     {
         private readonly string _payPalClientId;
         private readonly string _payPalSecret;
+        private readonly string _stripeApiKey;
+        private readonly string _squareAccessToken;
 
         public PaymentService(IConfiguration? configuration = null)
         {
@@ -18,13 +20,17 @@ namespace ContosoOrderProcessor.Services
             _payPalSecret = configuration?["PayPal:ClientSecret"] ?? 
                            Environment.GetEnvironmentVariable("PAYPAL_SECRET") ?? 
                            string.Empty;
-        }
 
-        // SECURITY ISSUE: Hard-coded Stripe API key
-        private const string StripeApiKey = "sk_live_51MqxYzABC123def456GHI789jklMNO012pqrSTU345vwxYZ678abcDEF901ghiJKL234mnoPQR567stuVWX890yzABC";
-        
-        // SECURITY ISSUE: Hard-coded Square Access Token
-        private const string SquareAccessToken = "EAAAEOuLQavTvyym5PByGZrGdRLWiL_RB0n8YF0gELTxFqLhNp6bKHRhA6P7Uv5F";
+            // Load Stripe API key from configuration or environment variables
+            _stripeApiKey = configuration?["Stripe:ApiKey"] ?? 
+                           Environment.GetEnvironmentVariable("STRIPE_API_KEY") ?? 
+                           string.Empty;
+
+            // Load Square Access Token from configuration or environment variables
+            _squareAccessToken = configuration?["Square:AccessToken"] ?? 
+                                Environment.GetEnvironmentVariable("SQUARE_ACCESS_TOKEN") ?? 
+                                string.Empty;
+        }
 
         public bool ProcessPayment(Order order)
         {
@@ -72,7 +78,7 @@ namespace ContosoOrderProcessor.Services
 
         private bool ProcessStripePayment(Order order)
         {
-            Console.WriteLine($"[PaymentService] Using Stripe API key: {StripeApiKey.Substring(0, 15)}...");
+            Console.WriteLine($"[PaymentService] Using Stripe API key: {(_stripeApiKey.Length > 15 ? _stripeApiKey.Substring(0, 15) + \"...\" : \"[Not configured]\")}...");
             Console.WriteLine($"[PaymentService] Creating Stripe payment intent for ${order.TotalAmount}");
             
             // Simulated Stripe API call
@@ -87,7 +93,7 @@ namespace ContosoOrderProcessor.Services
         private bool ProcessPayPalPayment(Order order)
         {
             Console.WriteLine($"[PaymentService] Using PayPal credentials");
-            Console.WriteLine($"[PaymentService] Client ID: {(_payPalClientId.Length > 20 ? _payPalClientId.Substring(0, 20) + "..." : "[Not configured]")}");
+            Console.WriteLine($"[PaymentService] Client ID: {(_payPalClientId.Length > 20 ? _payPalClientId.Substring(0, 20) + \"...\" : \"[Not configured]\")}");
             Console.WriteLine($"[PaymentService] Creating PayPal order for ${order.TotalAmount}");
             
             // Simulated PayPal API call
