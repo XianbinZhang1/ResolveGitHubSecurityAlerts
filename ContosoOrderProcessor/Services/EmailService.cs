@@ -6,6 +6,10 @@ namespace ContosoOrderProcessor.Services
     public class EmailService
     {
         private readonly string _sendGridApiKey;
+        private readonly string _mailgunApiKey;
+        private readonly string _smtpHost;
+        private readonly string _smtpUsername;
+        private readonly string _smtpPassword;
 
         public EmailService(IConfiguration? configuration = null)
         {
@@ -13,15 +17,25 @@ namespace ContosoOrderProcessor.Services
             _sendGridApiKey = configuration?["SendGrid:ApiKey"] ?? 
                              Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ?? 
                              string.Empty;
+
+            // Load Mailgun API key from configuration or environment variables
+            _mailgunApiKey = configuration?["Mailgun:ApiKey"] ?? 
+                            Environment.GetEnvironmentVariable("MAILGUN_API_KEY") ?? 
+                            string.Empty;
+
+            // Load SMTP credentials from configuration or environment variables
+            _smtpHost = configuration?["Smtp:Host"] ?? 
+                       Environment.GetEnvironmentVariable("SMTP_HOST") ?? 
+                       string.Empty;
+
+            _smtpUsername = configuration?["Smtp:Username"] ?? 
+                          Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? 
+                          string.Empty;
+
+            _smtpPassword = configuration?["Smtp:Password"] ?? 
+                           Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? 
+                           string.Empty;
         }
-        
-        // SECURITY ISSUE: Hard-coded Mailgun API key
-        private const string MailgunApiKey = "key-1234567890abcdef1234567890abcdef";
-        
-        // SECURITY ISSUE: Hard-coded SMTP credentials
-        private const string SmtpHost = "smtp.contoso.com";
-        private const string SmtpUsername = "notifications@contoso.com";
-        private const string SmtpPassword = "N0tif1c@ti0nP@ss2024";
 
         public bool SendOrderConfirmation(Order order, Customer customer)
         {
@@ -55,16 +69,16 @@ namespace ContosoOrderProcessor.Services
             try
             {
                 Console.WriteLine($"[EmailService] Sending shipping notification email");
-                Console.WriteLine($"[EmailService] Using SMTP server: {SmtpHost}");
-                Console.WriteLine($"[EmailService] SMTP username: {SmtpUsername}");
+                Console.WriteLine($"[EmailService] Using SMTP server: {_smtpHost}");
+                Console.WriteLine($"[EmailService] SMTP username: {_smtpUsername}");
                 Console.WriteLine($"[EmailService] To: {customer.Email}");
                 Console.WriteLine($"[EmailService] Tracking number: {trackingNumber}");
 
                 // Simulated SMTP email sending
                 // In a real application, this would use SmtpClient
-                // using (var smtpClient = new SmtpClient(SmtpHost))
+                // using (var smtpClient = new SmtpClient(_smtpHost))
                 // {
-                //     smtpClient.Credentials = new NetworkCredential(SmtpUsername, SmtpPassword);
+                //     smtpClient.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
                 //     smtpClient.Send(mailMessage);
                 // }
 
