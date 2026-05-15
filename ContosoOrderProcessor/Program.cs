@@ -1,4 +1,4 @@
-﻿using ContosoOrderProcessor.Models;
+using ContosoOrderProcessor.Models;
 using ContosoOrderProcessor.Services;
 using ContosoOrderProcessor.Security;
 using ContosoOrderProcessor.Configuration;
@@ -166,6 +166,12 @@ namespace ContosoOrderProcessor
                 { "SendGrid:ApiKey", "SendGrid__ApiKey" },
                 { "PayPal:ClientId", "PayPal__ClientId" },
                 { "PayPal:ClientSecret", "PayPal__ClientSecret" },
+                { "Stripe:ApiKey", "Stripe__ApiKey" },
+                { "Square:AccessToken", "Square__AccessToken" },
+                { "Mailgun:ApiKey", "Mailgun__ApiKey" },
+                { "Smtp:Host", "Smtp__Host" },
+                { "Smtp:Username", "Smtp__Username" },
+                { "Smtp:Password", "Smtp__Password" },
                 { "Database:ConnectionString", "Database__ConnectionString" },
                 { "GitHub:PersonalAccessToken", "GitHub__PersonalAccessToken" },
                 { "Npm:Token", "Npm__Token" }
