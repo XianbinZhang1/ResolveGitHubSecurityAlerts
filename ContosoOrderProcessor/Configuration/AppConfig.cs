@@ -54,6 +54,46 @@ namespace ContosoOrderProcessor.Configuration
             System.Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING") ??
             string.Empty;
 
+        // SendGrid API key loaded from environment variables or user secrets
+        public static string SendGridApiKey =>
+            _configuration?["SendGrid:ApiKey"] ??
+            System.Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ??
+            string.Empty;
+
+        // Stripe API key loaded from environment variables or user secrets
+        public static string StripeApiKey =>
+            _configuration?["Stripe:ApiKey"] ??
+            System.Environment.GetEnvironmentVariable("STRIPE_API_KEY") ??
+            string.Empty;
+
+        // Square Access Token loaded from environment variables or user secrets
+        public static string SquareAccessToken =>
+            _configuration?["Square:AccessToken"] ??
+            System.Environment.GetEnvironmentVariable("SQUARE_ACCESS_TOKEN") ??
+            string.Empty;
+
+        // Mailgun API key loaded from environment variables or user secrets
+        public static string MailgunApiKey =>
+            _configuration?["Mailgun:ApiKey"] ??
+            System.Environment.GetEnvironmentVariable("MAILGUN_API_KEY") ??
+            string.Empty;
+
+        // SMTP credentials loaded from environment variables or user secrets
+        public static string SmtpHost =>
+            _configuration?["Smtp:Host"] ??
+            System.Environment.GetEnvironmentVariable("SMTP_HOST") ??
+            string.Empty;
+
+        public static string SmtpUsername =>
+            _configuration?["Smtp:Username"] ??
+            System.Environment.GetEnvironmentVariable("SMTP_USERNAME") ??
+            string.Empty;
+
+        public static string SmtpPassword =>
+            _configuration?["Smtp:Password"] ??
+            System.Environment.GetEnvironmentVariable("SMTP_PASSWORD") ??
+            string.Empty;
+
         // SECURITY ISSUE: Hard-coded API keys for third-party services
         public const string TwilioAccountSid = "AC1234567890abcdef1234567890abcdef";
         public const string TwilioAuthToken = "1234567890abcdef1234567890abcdef";
